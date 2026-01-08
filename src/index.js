@@ -17,14 +17,14 @@ import './styles.css'
 class Weather{
     #key;
     #url;
+    data;
     constructor(loc){
         this.loc = loc;
         this.#url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
         this.#key = '264GN7TF2UVPDJRRGJRZL2GLP';
     }
-    async getWeather(){
-        const data = await this.#getWeatherData();
-        return this.#formatDay(data);
+    getWeather(){
+        return this.#formatDay(this.data);
     }
     #formatDay(data){
         const days = [];
@@ -39,11 +39,21 @@ class Weather{
         return days;
     }
     async #getWeatherData() {
-        return await fetch(`${this.#url}${this.loc}?key=${this.#key}`).then((response) => {return response.json()});
+        const response = await fetch(`${this.#url}${this.loc}?key=${this.#key}`);
+        return await response.json();
+    }
+    setWeatherData(){
+        const response = this.#getWeatherData();
+        this.data=response;
     }
 }
 
+function setupWeather(loc) {
+    const weather = new Weather(loc);
+    weather.setWeatherData();
+    return weather;
 
+}
 
-let las_vegas = new Weather("las vegas");
-console.log(las_vegas.getWeather());
+let las_vegas = setupWeather('las vegas');
+console.log(las_vegas);
