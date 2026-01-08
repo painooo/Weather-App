@@ -16,11 +16,13 @@
 import './styles.css'
 import Weather from './Weather.js'
 
-function setupWeather(loc) {
+
+
+async function setupWeather(loc) {
     const weather = new Weather(loc);
-    weather.load();
+    await weather.load();
     return weather;
 }
 
-let las_vegas = setupWeather('las vegas');
-console.log(las_vegas.formattedDate);
+let las_vegas = await setupWeather('las vegas');
+console.log(las_vegas.formattedDays)

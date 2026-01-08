@@ -8,8 +8,8 @@ export default class Weather{
     }
     async load() {
         const rawData = await this.#fetchWeatherData();
-        const formattedDays =  this.#formatDays(rawData);
-        return formattedDays;
+        this.formattedDays =  this.#formatDays(rawData);
+        return this.formattedDays;
     }
     #formatDays(rawData){
         let days = [];
