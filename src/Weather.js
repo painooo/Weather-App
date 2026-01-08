@@ -1,19 +1,20 @@
 export default class Weather{
     #key;
     #url;
-    data;
     constructor(loc){
         this.loc = loc;
         this.#url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
         this.#key = '264GN7TF2UVPDJRRGJRZL2GLP';
     }
-    getWeather(){
-        return this.#formatDay(this.data);
+    async load() {
+        const rawData = await this.#getWeatherData();
+        const formattedDays =  this.#formatDays(rawData);
+        return formattedDays;
     }
-    #formatDay(data){
-        const days = [];
+    #formatDays(rawData){
+        let days = [];
         const dataNeeded = ['datetime', 'tempmax', 'tempmin', 'temp', 'precipprob', 'windspeed', 'conditions'];
-        for (let day of data['days']){
+        for (let day of rawData['days']){
             let formattedDay = {};
             for (let asset of dataNeeded) {
                 formattedDay[asset]=day[asset];
@@ -24,10 +25,7 @@ export default class Weather{
     }
     async #getWeatherData() {
         const response = await fetch(`${this.#url}${this.loc}?key=${this.#key}`);
-        return await response.json();
-    }
-    setWeatherData(){
-        const response = this.#getWeatherData();
-        this.data=response;
+        const result = await response.json();
+        return result;
     }
 }

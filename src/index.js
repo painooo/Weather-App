@@ -15,12 +15,12 @@
 
 import './styles.css'
 import Weather from './Weather.js'
+
 function setupWeather(loc) {
     const weather = new Weather(loc);
-    weather.setWeatherData();
+    weather.load();
     return weather;
-
 }
 
 let las_vegas = setupWeather('las vegas');
-console.log(las_vegas);
+console.log(las_vegas.formattedDate);
