@@ -7,7 +7,7 @@ export default class Weather{
         this.#key = '264GN7TF2UVPDJRRGJRZL2GLP';
     }
     async load() {
-        const rawData = await this.#getWeatherData();
+        const rawData = await this.#fetchWeatherData();
         const formattedDays =  this.#formatDays(rawData);
         return formattedDays;
     }
@@ -23,7 +23,7 @@ export default class Weather{
         }
         return days;
     }
-    async #getWeatherData() {
+    async #fetchWeatherData() {
         const response = await fetch(`${this.#url}${this.loc}?key=${this.#key}`);
         const result = await response.json();
         return result;
