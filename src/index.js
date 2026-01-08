@@ -5,6 +5,7 @@
 //      ** URL ENCODED
 //      - 
 // 2. Format Data
+//      - (days)
 //      - Use ol & li to list out data 
 //          - Date
 //          - Temp (hi & lo)
@@ -15,19 +16,34 @@
 import './styles.css'
 class Weather{
     #key;
+    #url;
     constructor(loc){
         this.loc = loc;
-        this.url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
+        this.#url = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
         this.#key = '264GN7TF2UVPDJRRGJRZL2GLP';
     }
-    getWeather(){
-        console.log(this.#getWeatherData());
+    async getWeather(){
+        const data = await this.#getWeatherData();
+        return this.#formatDay(data);
+    }
+    #formatDay(data){
+        const days = [];
+        const dataNeeded = ['datetime', 'tempmax', 'tempmin', 'temp', 'precipprob', 'windspeed', 'conditions'];
+        for (let day of data['days']){
+            let formattedDay = {};
+            for (let asset of dataNeeded) {
+                formattedDay[asset]=day[asset];
+            }
+            days.push(formattedDay);
+        }
+        return days;
     }
     async #getWeatherData() {
-        const response = await fetch(`${this.url}${this.loc}?key=${this.#key}`).then((response) => {return response.json()});
-        return response;
+        return await fetch(`${this.#url}${this.loc}?key=${this.#key}`).then((response) => {return response.json()});
     }
 }
 
+
+
 let las_vegas = new Weather("las vegas");
-las_vegas.getWeather();
+console.log(las_vegas.getWeather());
