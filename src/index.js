@@ -30,8 +30,3 @@ async function setupWeather(loc) {
     await weather.load();
     return weather;
 }
-// const las_vegas = await setupWeather('las vegas');
-// const las_vegasDOM = setupWeatherDOM(las_vegas);
-// las_vegasDOM.createDOM();
-
-// console.log(las_vegas.formattedDays)
