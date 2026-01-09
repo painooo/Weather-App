@@ -27,6 +27,8 @@ export default class WeatherDOM {
     static #createBodyLists(container, days) {
         for (let i = 0; i < days.length; i++){
             const list = document.createElement("ul");
+            const title = this.#createDayTitle(i)
+            list.appendChild(title);
             const currDay = days[i];
             for (let items in currDay) {
                 const listItem = document.createElement("li");
@@ -40,10 +42,19 @@ export default class WeatherDOM {
                 listItem.appendChild(title);
                 listItem.appendChild(data);
             }
-            const title = document.createElement("h3");
-            title.textContent = `Day ${i}`;
-            container.appendChild(title);
             container.appendChild(list);
         }
+    }
+    static #createDayTitle(i) {
+        const title = document.createElement("li");
+        title.classList.add("dayTitle");
+        if (i == 0){
+            title.textContent = "Today";
+        } else if (i == 1) {
+            title.textContent = "Tomm."
+        } else {
+            title.textContent = `Day ${i+1}`;
+        }
+        return title;
     }
 }

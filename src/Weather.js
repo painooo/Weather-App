@@ -14,10 +14,11 @@ export default class Weather{
     #formatDays(rawData){
         let days = [];
         const dataNeeded = ['datetime', 'tempmax', 'tempmin', 'temp', 'precipprob', 'windspeed', 'conditions'];
+        const dataTitle = ['Date', 'Max Temp', 'Min Temp', 'Cur. Temp', 'Precip. Prob', 'WindSpeed', 'Conditions'];
         for (let day of rawData['days']){
             let formattedDay = {};
-            for (let asset of dataNeeded) {
-                formattedDay[asset]=day[asset];
+            for (let i = 0; i < dataNeeded.length; i++) {
+                formattedDay[dataTitle[i]]=day[dataNeeded[i]];
             }
             days.push(formattedDay);
         }
