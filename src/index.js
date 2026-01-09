@@ -16,38 +16,43 @@
 import './styles.css'
 import Weather from './Weather.js'
 
-// const searchBtn = document.querySelector("#search");
-// searchBtn.addEventListener("click", (e) => {
-    // const location = document.querySelector("#loc");
-    // setupWeather(location);
-// })
+const searchBtn = document.querySelector("#search");
+searchBtn.addEventListener("click", async (e) => {
+    const location = document.querySelector("#loc").value;
+    const weather = await setupWeather(location);
+    console.log(weather)
+    WeatherDOM.createDOM(weather.loc, weather.formattedDays);
+})
 const container = document.querySelector("#container");
 class WeatherDOM {
-    constructor(weather) {
-        this.weather = weather;
-        this.days = this.weather.formattedDays;
+    static createDOM(loc, days) {
+        this.clearContainer();
+        this.#createHeader(loc);
+        const bodyContainer = this.#createBodyContainer();
+        this.#createBody(bodyContainer, days);
     }
-    createDOM() {
+    static clearContainer(){
         container.textContent = "";
-        this.#createHeader();
+    }
+    static #createBodyContainer(){
         const bodyContainer = document.createElement("div")
         bodyContainer.classList.add("bodyContainer");
         container.appendChild(bodyContainer);
-        this.#createBody(bodyContainer);
+        return bodyContainer;
     }
-    #createHeader() {
+    static #createHeader(loc) {
         const title = document.createElement("h1");
-        title.textContent = this.weather.loc;
+        title.textContent = loc;
         title.classList.add("title");
         container.appendChild(title);
     };
-    #createBody(container) {
-        this.#createBodyLists(container);
+    static #createBody(container, days) {
+        this.#createBodyLists(container, days);
     }
-    #createBodyLists(container) {
-        for (let i = 0; i < this.days.length; i++){
+    static #createBodyLists(container, days) {
+        for (let i = 0; i < days.length; i++){
             const list = document.createElement("ul");
-            const currDay = this.days[i];
+            const currDay = days[i];
             for (let items in currDay) {
                 const listItem = document.createElement("li");
                 const title = document.createElement("p");
@@ -73,11 +78,8 @@ async function setupWeather(loc) {
     await weather.load();
     return weather;
 }
-function setupWeatherDOM(weather){
-    return new WeatherDOM(weather)
-}
-const las_vegas = await setupWeather('las vegas');
-const las_vegasDOM = setupWeatherDOM(las_vegas);
-las_vegasDOM.createDOM();
+// const las_vegas = await setupWeather('las vegas');
+// const las_vegasDOM = setupWeatherDOM(las_vegas);
+// las_vegasDOM.createDOM();
 
-console.log(las_vegas.formattedDays)
+// console.log(las_vegas.formattedDays)
